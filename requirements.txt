@@ -1,0 +1,5 @@
+ConferenceCorpus
+tabulate
+pylodstorage
+lxml #ToDo: add to ConferenceCorpus requirements
+bs4 #ToDo: add to ConferenceCorpus requirements
