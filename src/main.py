@@ -1,3 +1,6 @@
+from os.path import expanduser
+
+from corpus.datasources.download import Download
 from corpus.event import EventStorage
 from corpus.lookup import CorpusLookup, CorpusLookupConfigure
 from tabulate import tabulate
@@ -11,9 +14,12 @@ class ConferenceCorpusIntro:
     """
 
     def __init__(self, forceUpdate:bool=False):
+        # If you want the complete dblp datasource set onlySample to False
+        # Note: This might be not necessary in a newer version of ConfernceCorpus but currently there is a bug and the dblp dump must be provided beforehand
+        RawDataSources.downloadDblp(onlySample=True, forceUpdate=forceUpdate)  # Once downloaded set forceUpdate to False to not download the dump everytime
         self.corpus = CorpusLookup(configure=CorpusLookupConfigure.configureCorpusLookup)  # by not providing lookupids we load all datasources
         # now we need to load the datasources
-        # with forceUpdate=True the cache is reinitialized by querying the datasources again (takes some time)
+        # with forceUpdate=True the cache is reinitialized by querying the datasources or dumps of the datasources (takes some time)
         # is done automatically if cache is not available
         print("Loading the datasources (this might take some time)")
         self.corpus.load(forceUpdate=forceUpdate)  # if the datasources are not cached this takes some time
@@ -112,6 +118,34 @@ class ConferenceCorpusIntro:
         path = EventStorage.getStorageConfig().getCachePath() + "/EventCorpus.db"
         print(f"ConferenceCorpus cache is stored at {path}")
         return path
+
+
+class RawDataSources:
+    """
+    Manages the download of raw datasources that are needed to init the ConferenceCorpus
+    """
+
+    @classmethod
+    def downloadDblp(cls, onlySample:bool=True, forceUpdate:bool=False):
+        """
+        download the dblp xml dump
+
+        Args:
+             onlySample(bool): If False the complete xml dump is downloaded (~4GB). Otherwise only a sample is downloaded.
+             forceUpdate(bool): If True the file will be downloaded even if already existent
+        """
+        sampleUrl = "https://github.com/WolfgangFahl/ConferenceCorpus/wiki/data/dblpsample.xml.gz"
+        dumpUrl = "https://dblp.uni-trier.de/xml/dblp.xml.gz"
+        if onlySample:
+            url=sampleUrl
+        else:
+            url = dumpUrl
+        home = expanduser("~")
+        Download.downloadBackupFile(url=url,
+                                    fileName="dblp.xml",
+                                    targetDirectory=f"{home}/.dblp",
+                                    force=forceUpdate,
+                                    profile=True)
 
 
 if __name__ == '__main__':
