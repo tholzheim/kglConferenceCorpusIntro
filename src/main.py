@@ -10,13 +10,13 @@ class ConferenceCorpusIntro:
     Show cases the functions and data available in the ConferenceCorpus
     """
 
-    def __init__(self):
+    def __init__(self, forceUpdate:bool=False):
         self.corpus = CorpusLookup(configure=CorpusLookupConfigure.configureCorpusLookup)  # by not providing lookupids we load all datasources
         # now we need to load the datasources
         # with forceUpdate=True the cache is reinitialized by querying the datasources again (takes some time)
         # is done automatically if cache is not available
         print("Loading the datasources (this might take some time)")
-        self.corpus.load()  # if the datasources are not cached this takes some time
+        self.corpus.load(forceUpdate=forceUpdate)  # if the datasources are not cached this takes some time
 
 
     def printEventsOfDatasource(self, sourceId:str, limit:int=10):

@@ -9,7 +9,7 @@ class TestConfereceCorpusIntro(BaseTest):
 
     def setUp(self, **kwargs):
         super().setUp(**kwargs)
-        self.cc = ConferenceCorpusIntro()
+        self.cc = ConferenceCorpusIntro(forceUpdate=True)
 
     def tearDown(self):
         super().tearDown()
