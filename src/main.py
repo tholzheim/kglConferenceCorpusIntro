@@ -23,6 +23,7 @@ class ConferenceCorpusIntro:
         # is done automatically if cache is not available
         print("Loading the datasources (this might take some time)")
         self.corpus.load(forceUpdate=forceUpdate)  # if the datasources are not cached this takes some time
+        # the datasources are now loaded and each datasource contains an EventManager and EventSeriesManager (there are datasource were only of both is filled with entities)
 
 
     def printEventsOfDatasource(self, sourceId:str, limit:int=10):
