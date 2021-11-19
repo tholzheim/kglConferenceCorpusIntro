@@ -11,6 +11,9 @@ This project demonstrates how [ConferenceCorpus](https://github.com/WolfgangFahl
 * [python](https://www.python.org/) >3.6 (with the [tkinter](https://docs.python.org/3/library/tkinter.html) package)
 * \>= 4GB RAM
 
+### OS Specific Preparations
+* [Windows setup](./docs/windows_setup.md)
+
 ### Data Sources Requirements
 Before running the tests ensure that the raw data of the data sources is downloaded by running the following scripts:
 ```
