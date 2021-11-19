@@ -14,8 +14,8 @@
 > ![](./images/vs_python_interpreter.png)
 
 ## PyCharm
-If you have [git](https://git-scm.com/) installed you should find `bin\bash.exe` in the installation folder of `Git.
+If you have [git](https://git-scm.com/) installed you should find `bin\bash.exe` in the installation folder of `Git`.
 By setting this .exe as Shell path you can open a bash-terminal in the IDE. Now open a new Terminal you should see that a bash-terminal is loaded. In this terminal you can now run the required bash-scripts
 ![](./images/pycharm_shell.png)
->Note: PyCharm by default uses virtual environments (venv) for python so either ensure that the venv is activated in the shell or change the projects interpreter to the python environment used in the bash-terminal.
+>Note: PyCharm by default uses virtual environments (venv) for python so either ensure that the venv is activated in the bash-terminal or change the projects interpreter to the python environment used in the bash-terminal.
 >![](./images/pycharm_project_interpreter.png)
