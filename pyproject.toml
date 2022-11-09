@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kglConferenceCorpusIntro"
+requires-python = ">=3.8"
+dynamic = ["version", "readme", "dependencies"]
+
+
+[tool.setuptools.dynamic]
+version = {attr = "kglConferenceCorpusIntro.VERSION"}
+readme = {file = "README.md"}
+dependencies = {file = "requirements.txt"}

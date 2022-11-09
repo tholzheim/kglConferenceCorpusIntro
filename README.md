@@ -60,10 +60,10 @@ You can also check if the data sources at there storage location:
 |location|data sources|
 |---|---|
 |`$HOME/.conferencecorpus/`|wikicfp,crossref and confref also the EventCorpus.db is stored here |
-|`$HOME/.dblp/`|dblp (to get the  complete data dump (~4GB) see [ConferenceCorpusIntro](./src/main.py))|
+|`$HOME/.dblp/`|dblp (to get the  complete data dump (~4GB) see [ConferenceCorpusIntro](kglConferenceCorpusIntro/main.py))|
 |`$HOME/.or/`|openresearch ([original](https://www.openresearch.org/wiki/Main_Page) and [clone](https://confident.dbis.rwth-aachen.de/or/index.php?title=Main_Page)) wiki-Markup files|
 
 ## Integrating and Using the ConferenceCorpus
 
-The procedure on how to load and access the ConferenceCorpus is described in the class [ConferenceCorpusIntro](./src/main.py).
+The procedure on how to load and access the ConferenceCorpus is described in the class [ConferenceCorpusIntro](kglConferenceCorpusIntro/main.py).
 An overview of the different data sources can be found in the [official wiki](http://wiki.bitplan.com/index.php/ConferenceCorpus)

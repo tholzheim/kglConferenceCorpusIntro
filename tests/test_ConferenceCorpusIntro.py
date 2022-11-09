@@ -1,24 +1,24 @@
-from src.main import ConferenceCorpusIntro
+from kglConferenceCorpusIntro.main import ConferenceCorpusIntro
 from tests.basetest import BaseTest
 
 
-class TestConfereceCorpusIntro(BaseTest):
+class TestConferenceCorpusIntro(BaseTest):
     """
     tests ConferenceCorpusIntro
     """
 
     def setUp(self, **kwargs):
         super().setUp(**kwargs)
-        self.cc = ConferenceCorpusIntro(forceUpdate=False)
+        self.cc = ConferenceCorpusIntro(force_update=False)
 
     def tearDown(self):
         super().tearDown()
 
-    def test_loadingOfDatasources(self):
+    def test_loading_of_data_sources(self):
         """
         tests if the datasource are loaded correctly
         """
-        datasourceIds = self.cc.printAvailableDatasourceIds()
+        datasourceIds = self.cc.get_available_datasource_ids()
         for id in datasourceIds:
             events = self.cc.corpus.getDataSource(id).eventManager.getList()
             series = self.cc.corpus.getDataSource(id).eventSeriesManager.getList()

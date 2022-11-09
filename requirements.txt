@@ -1,5 +1,2 @@
-ConferenceCorpus
+ConferenceCorpus >=0.0.38
 tabulate
-pylodstorage
-lxml #ToDo: add to ConferenceCorpus requirements
-bs4 #ToDo: add to ConferenceCorpus requirements
