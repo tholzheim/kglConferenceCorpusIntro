@@ -1,3 +1,6 @@
+"""
+Introduction to the usage of the ConferenceCorpus API
+"""
 import sys
 from os.path import expanduser
 from logging import Logger, DEBUG, StreamHandler
@@ -63,6 +66,7 @@ class ConferenceCorpusIntro:
             limit(int): limits the amount of printed events id None print all
         """
         datasource = self.corpus.getDataSource(source_id)
+        events = None
         # During the loading of the datasource the event series and the events are linked together if possible
         # (see EventManager.linkSeriesAndEvent())
         # result of this interlinking is a lookup table
@@ -73,10 +77,9 @@ class ConferenceCorpusIntro:
                 lod = lod[:limit]
             self.logger.debug(f"Events of {series_acronym} in {source_id}")
             self.logger.debug(tabulate(lod, headers="keys"))
-            return events
         else:
             self.logger.debug(f"The datasource {source_id} does not have any events linked to the series {series_acronym}")
-            return None
+        return events
 
     def query_corpus_db(self, sql_query: str = None):
         """
