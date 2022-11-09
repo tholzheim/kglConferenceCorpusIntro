@@ -1,6 +1,7 @@
 """
 Introduction to the usage of the ConferenceCorpus API
 """
+import argparse
 import sys
 from os.path import expanduser
 from logging import Logger, DEBUG, StreamHandler
@@ -88,7 +89,7 @@ class ConferenceCorpusIntro:
         if sql_query is None:
             sql_query = "SELECT * FROM event LIMIT 5"
         # we can also query the database directly e.g. to write complex queries / merge tables / access views
-        db_file = self.gat_cache_file()
+        db_file = self.get_cache_file()
         sql_db = SQLDB(dbname=db_file)
         # now we can directly query the EventCorpus.db abd get LoDs (List of Dicts) as result
         # Try it by writing your own query
@@ -125,7 +126,8 @@ class ConferenceCorpusIntro:
         self.logger.debug("Available datasource ids: ", ids)
         return ids
 
-    def gat_cache_file(self):
+    @staticmethod
+    def get_cache_file():
         """
         Get the location of the ConferenceCorpus cache file (sqlite database)
 
@@ -133,7 +135,6 @@ class ConferenceCorpusIntro:
             str absolut path to cache file
         """
         path = EventStorage.getStorageConfig().getCachePath() + "/EventCorpus.db"
-        self.logger.debug(f"ConferenceCorpus cache is stored at {path}")
         return path
 
 
@@ -166,9 +167,28 @@ class RawDataSources:
                 profile=True)
 
 
+def start_corpus_db_browser():
+    """
+    start sqlite browser with the ConferenceCorpus database
+    """
+    db_file = ConferenceCorpusIntro.get_cache_file()
+    parser = argparse.ArgumentParser(
+            prog='ConferenceCorpusDbWebBrowser',
+            description='Web interface for the database of the ConferenceCorpus',
+            add_help=True
+    )
+    parser.add_argument("-p", dest="port", help="Port the web server should use")
+    args = parser.parse_args()
+    commands = ["sqlite_web"]
+    if args.port:
+        commands.extend(["-p", args.port])
+    import subprocess
+    subprocess.run([*commands, db_file])
+
+
 if __name__ == '__main__':
     cc = ConferenceCorpusIntro()
-    cc.gat_cache_file()
+    cc.get_cache_file()
     cc.get_available_datasource_ids()
     cc.get_events_of_data_source(source_id="wikidata")
     cc.get_events_of_series(source_id="or", series_acronym="AAAI", limit=5)

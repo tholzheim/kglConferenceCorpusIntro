@@ -12,3 +12,6 @@ dynamic = ["version", "readme", "dependencies"]
 version = {attr = "kglConferenceCorpusIntro.VERSION"}
 readme = {file = "README.md"}
 dependencies = {file = "requirements.txt"}
+
+[project.scripts]
+corpus-db-browser = "kglConferenceCorpusIntro.main:start_corpus_db_browser"
