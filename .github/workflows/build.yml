@@ -10,8 +10,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -39,10 +38,15 @@ jobs:
     - name: Run tests
       run: |
         scripts/test
-    - name: Install pylint
-      run: |
-        pip install pylint
-    - name: Code Quality Analysis
-      run: |
-        pylint kglConferenceCorpusIntro --output-format=colorized --exit-zero
-      
+
+  quality:
+    needs: test
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install pylint
+        run: |
+          pip install pylint
+      - name: Code Quality Analysis
+        run: |
+          pylint kglConferenceCorpusIntro --output-format=colorized --exit-zero
