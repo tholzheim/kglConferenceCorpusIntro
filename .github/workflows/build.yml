@@ -38,15 +38,18 @@ jobs:
     - name: Run tests
       run: |
         scripts/test
-
-  quality:
-    needs: test
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install pylint
-        run: |
-          pip install pylint
-      - name: Code Quality Analysis
-        run: |
-          pylint kglConferenceCorpusIntro --output-format=colorized --exit-zero
+    - name: Install pylint
+      run: |
+        pip install pylint
+    - name: Code Quality Analysis
+      run: |
+        pylint kglConferenceCorpusIntro --output-format=colorized --exit-zero
+    - name: Install coverage
+      run: |
+        pip install coverage
+    - name: Run Coverage test
+      run: |
+        coverage run -m unittest discover
+    - name: Test Coverage Result
+      run: |
+        coverage report -m
