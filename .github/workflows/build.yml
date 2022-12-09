@@ -29,6 +29,9 @@ jobs:
     - name: Install dependencies 
       run: |
         scripts/install
+    - name: Download ConferenceCorpus
+      run: |
+        python scripts/get_cc_db.py
     - name: get SMW backups of OPENRESEARCH and Clone
       run: |
         scripts/getbackup
