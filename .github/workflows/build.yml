@@ -10,15 +10,34 @@ on:
     branches: [ master ]
 
 jobs:
+  corpus_db:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - run: |
+          pip install ConferenceCorpus
+          python scripts/get_cc_db.py
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ConferenceCorpus
+          path: ~/.conferencecorpus/EventCorpus.db
+          retention-days: 1
   test:
     runs-on: ubuntu-latest
+    needs: [corpus_db]
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.9", "3.10"]
-
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v3
+      with:
+        name: ConferenceCorpus
+        path: ~/.conferencecorpus/
+    - name: Check artifact
+      run: ls ~/.conferencecorpus/
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
@@ -29,9 +48,6 @@ jobs:
     - name: Install dependencies 
       run: |
         scripts/install
-    - name: Download ConferenceCorpus
-      run: |
-        python scripts/get_cc_db.py
     - name: get SMW backups of OPENRESEARCH and Clone
       run: |
         scripts/getbackup
@@ -41,18 +57,29 @@ jobs:
     - name: Run tests
       run: |
         scripts/test
-    - name: Install pylint
-      run: |
-        pip install pylint
-    - name: Code Quality Analysis
-      run: |
-        pylint kglConferenceCorpusIntro --output-format=colorized --exit-zero
-    - name: Install coverage
-      run: |
-        pip install coverage
-    - name: Run Coverage test
-      run: |
-        coverage run -m unittest discover
-    - name: Test Coverage Result
-      run: |
-        coverage report -m
+  quality:
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+      - name: Install pylint
+        run: |
+          pip install pylint
+      - name: Code Quality Analysis
+        run: |
+          pylint kglConferenceCorpusIntro --output-format=colorized --exit-zero
+  coverage:
+    runs-on: ubuntu-latest
+    needs: [ test ]
+    steps:
+      - name: Install coverage
+        run: |
+          pip install coverage
+      - name: Run Coverage test
+        run: |
+          coverage run -m unittest discover
+      - name: Test Coverage Result
+        run: |
+          coverage report -m
