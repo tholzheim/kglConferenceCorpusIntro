@@ -10,35 +10,19 @@ on:
     branches: [ master ]
 
 jobs:
-  corpus_db:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-      - name: install ConferenceCorpus
-        run: pip install ConferenceCorpus
-      - name: download ConferenceCorpus database
-        run: python scripts/get_cc_db.py
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ConferenceCorpus
-          path: ~/.conferencecorpus/EventCorpus.db
-          retention-days: 1
   test:
     runs-on: ubuntu-latest
-    needs: [corpus_db]
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.9", "3.10"]
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/download-artifact@v3
+    - uses: actions/cache@v3
+      id: cache_corpus
       with:
-        name: ConferenceCorpus
-        path: ~/.conferencecorpus/
-    - name: Check artifact
-      run: ls ~/.conferencecorpus/
+        path: ~/.conferencecorpus
+        key: ${{ matrix.os }}-EventCorpus
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
@@ -46,6 +30,9 @@ jobs:
     - name: Install dependencies 
       run: |
         scripts/install
+    - name: Download ConferenceCorpus
+      if: steps.cache_corpus.outputs.cache-hit != 'true'
+      run: python scripts/get_cc_db.py
     - name: get SMW backups of OPENRESEARCH and Clone
       run: |
         scripts/getbackup
