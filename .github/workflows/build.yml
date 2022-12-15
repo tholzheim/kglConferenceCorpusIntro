@@ -43,7 +43,6 @@ jobs:
         restore-keys: |
           ${{ matrix.os }}-${{ matrix.python-version }}-pip-
     - name: Install dependencies
-      if: steps.pip-cache.outputs.cache-hit != 'true'
       run: |
         scripts/install
     - name: Download ConferenceCorpus
