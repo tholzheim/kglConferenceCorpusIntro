@@ -33,6 +33,8 @@ jobs:
     - name: Download ConferenceCorpus
       if: steps.cache_corpus.outputs.cache-hit != 'true'
       run: python scripts/get_cc_db.py
+    - name: Check Corpus
+      run: ls ~/.conferencecorpus
     - name: get SMW backups of OPENRESEARCH and Clone
       run: |
         scripts/getbackup
